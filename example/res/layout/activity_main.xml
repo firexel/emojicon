@@ -22,7 +22,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         />
-	<github.ankushsachdeva.emojicon.EmojiconEditText
+	<EditText
         android:id="@+id/emojicon_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

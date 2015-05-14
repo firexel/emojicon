@@ -20,8 +20,8 @@
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
     android:cacheColorHint="@android:color/transparent"
-    android:columnWidth="40dip"
-    android:horizontalSpacing="0dip"
+    android:columnWidth="64dp"
+    android:horizontalSpacing="0dp"
     android:numColumns="auto_fit"
     android:scrollbars="vertical"
-    android:verticalSpacing="0dip" />
+    android:verticalSpacing="0dp" />
