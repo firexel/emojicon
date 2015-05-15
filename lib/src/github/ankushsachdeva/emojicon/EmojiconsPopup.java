@@ -31,9 +31,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
-import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -64,6 +62,7 @@ public class EmojiconsPopup extends PopupWindow implements ViewPager.OnPageChang
 
     @Nullable
     private OnEmojiconBackspaceClickedListener mEmojiconBackspaceClickedListener;
+
     private GlobalLayoutListener mGlobalLayoutListener = new GlobalLayoutListener();
 
     /**
@@ -80,6 +79,8 @@ public class EmojiconsPopup extends PopupWindow implements ViewPager.OnPageChang
         setContentView(createCustomView());
         setSoftInputMode(LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         setSize((int) mContext.getResources().getDimension(R.dimen.keyboard_height), LayoutParams.MATCH_PARENT);
+        setBackgroundDrawable(null);
+        setAnimationStyle(0);
     }
 
     /**
