@@ -1,13 +1,23 @@
 package github.ankushsachdeva.emojicon;
 
+import java.nio.charset.Charset;
+
 /**
  * Created by aleksandr.naumov on 13.05.2015.
  */
 public class Emojicon {
     private final String mStringRepresentation;
 
-    public Emojicon(String mStringRepresentation) {
-        this.mStringRepresentation = mStringRepresentation;
+    public Emojicon(String stringRepresentation) {
+        byte bytes[] = new byte[stringRepresentation.length() / 2];
+        for (int i = 0; i < stringRepresentation.length(); i += 2) {
+            try {
+                bytes[i / 2] = (byte) Integer.parseInt(stringRepresentation.substring(i, i + 2), 16);
+            } catch (NumberFormatException ex) {
+                throw new RuntimeException(String.format("Cannot parse '%s' as emojicon code", stringRepresentation), ex);
+            }
+        }
+        this.mStringRepresentation = new String(bytes, Charset.forName("Utf-8"));
     }
 
     @Override

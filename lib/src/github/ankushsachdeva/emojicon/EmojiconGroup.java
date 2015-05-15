@@ -19,12 +19,9 @@ abstract class EmojiconGroup {
 
     private static List<Emojicon> extractEmojicons(String emojiconsString) {
         List<Emojicon> emojicons = new ArrayList<>();
-        for (int charIndex = 0; charIndex < emojiconsString.length(); charIndex++) {
-            int codePoint = emojiconsString.codePointAt(charIndex);
-            int codePointLength = Character.charCount(codePoint);
-            emojicons.add(new Emojicon(emojiconsString.substring(charIndex, charIndex + codePointLength)));
-            if (codePointLength > 1) {
-                charIndex += codePointLength - 1;
+        for (String emojiconString : emojiconsString.split(" ")) {
+            if(!emojiconString.isEmpty()) {
+                emojicons.add(new Emojicon(emojiconString));
             }
         }
         return emojicons;

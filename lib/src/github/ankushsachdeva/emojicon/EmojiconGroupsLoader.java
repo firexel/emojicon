@@ -47,7 +47,7 @@ class EmojiconGroupsLoader {
                 case XmlPullParser.TEXT:
                     if (groupName != null) {
                         groups.add(EmojiconGroup.fromString(
-                                unescapeString(parser.getText()),
+                                parser.getText(),
                                 getGroupNameIcon(groupName)
                         ));
                         groupName = null;
@@ -56,15 +56,6 @@ class EmojiconGroupsLoader {
             }
         }
         return groups;
-    }
-
-    private String unescapeString(String escapedString) {
-        String[] strings = escapedString.split(" ");
-        byte bytes[] = new byte[strings.length];
-        for (int i = 0; i < strings.length; i++) {
-            bytes[i] = (byte) Integer.parseInt(strings[i], 16);
-        }
-        return new String(bytes, Charset.forName("Utf-8"));
     }
 
     private int getGroupNameIcon(String groupName) {

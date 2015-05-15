@@ -31,7 +31,7 @@ class EmojiconRecentsManager {
     private static final String PREFERENCE_NAME = "emojicon";
     private static final String PREF_RECENTS = "recent_emojis";
     private static final String PREF_PAGE = "recent_page";
-    private static final String EMOJI_DIVIDER = "~";
+    private static final String EMOJI_DIVIDER = " ";
 
     private final LinkedList<Emojicon> mEmoji;
     private Context mContext;
@@ -65,22 +65,19 @@ class EmojiconRecentsManager {
     }
 
     private LinkedList<Emojicon> loadRecent() {
-        LinkedList<Emojicon> emojicons = new LinkedList<>();
-        SharedPreferences prefs = getPreferences();
-        String allEmoji = prefs.getString(PREF_RECENTS, "");
+        String allEmoji = getPreferences().getString(PREF_RECENTS, "");
         if (allEmoji != null) {
-            for (String emojiconString : allEmoji.split(EMOJI_DIVIDER)) {
-                emojicons.add(new Emojicon(emojiconString));
-            }
+            return new LinkedList<>(EmojiconGroup.fromString(allEmoji, 0).getEmojicons());
+        } else {
+            return new LinkedList<>();
         }
-        return emojicons;
     }
 
     public void save() {
         StringBuilder str = new StringBuilder();
         for (Iterator<Emojicon> iterator = mEmoji.iterator(); iterator.hasNext(); ) {
             Emojicon emojicon = iterator.next();
-            str.append(emojicon.toString()).append(iterator.hasNext() ? EMOJI_DIVIDER : "");
+            str.append(emojicon.getId()).append(iterator.hasNext() ? EMOJI_DIVIDER : "");
         }
         getPreferences().edit().putString(PREF_RECENTS, str.toString()).apply();
     }
