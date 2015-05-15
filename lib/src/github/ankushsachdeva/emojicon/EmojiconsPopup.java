@@ -24,13 +24,16 @@ import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -61,6 +64,7 @@ public class EmojiconsPopup extends PopupWindow implements ViewPager.OnPageChang
 
     @Nullable
     private OnEmojiconBackspaceClickedListener mEmojiconBackspaceClickedListener;
+    private GlobalLayoutListener mGlobalLayoutListener = new GlobalLayoutListener();
 
     /**
      * Constructor
@@ -142,45 +146,12 @@ public class EmojiconsPopup extends PopupWindow implements ViewPager.OnPageChang
     /**
      * Call this function to resize the emoji popup according to your soft keyboard size
      */
-    public void setSizeForSoftKeyboard() {
-        mRootView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                Rect r = new Rect();
-                mRootView.getWindowVisibleDisplayFrame(r);
+    public void attachGlobalLayoutListener() {
+        mRootView.getViewTreeObserver().addOnGlobalLayoutListener(mGlobalLayoutListener);
+    }
 
-                int screenHeight = mRootView.getRootView()
-                        .getHeight();
-                int heightDifference = screenHeight
-                        - (r.bottom - r.top);
-                int resourceId = mContext.getResources()
-                        .getIdentifier("status_bar_height",
-                                "dimen", "android");
-                if (resourceId > 0) {
-                    heightDifference -= mContext.getResources()
-                            .getDimensionPixelSize(resourceId);
-                }
-                if (heightDifference > 100) {
-                    keyBoardHeight = heightDifference;
-                    setSize(LayoutParams.MATCH_PARENT, keyBoardHeight);
-                    if (!mIsOpened) {
-                        if (mSoftKeyboardOpenCloseListener != null) {
-                            mSoftKeyboardOpenCloseListener.onKeyboardOpen(keyBoardHeight);
-                        }
-                    }
-                    mIsOpened = true;
-                    if (mWaitingForKbOpen) {
-                        showAtBottom();
-                        mWaitingForKbOpen = false;
-                    }
-                } else {
-                    mIsOpened = false;
-                    if (mSoftKeyboardOpenCloseListener != null) {
-                        mSoftKeyboardOpenCloseListener.onKeyboardClose();
-                    }
-                }
-            }
-        });
+    public void detachGlobalLayoutListener() {
+        mRootView.getViewTreeObserver().removeGlobalOnLayoutListener(mGlobalLayoutListener);
     }
 
     /**
@@ -355,5 +326,47 @@ public class EmojiconsPopup extends PopupWindow implements ViewPager.OnPageChang
         void onKeyboardOpen(int keyBoardHeight);
 
         void onKeyboardClose();
+    }
+
+    private class GlobalLayoutListener implements OnGlobalLayoutListener {
+        @Override
+        public void onGlobalLayout() {
+            Rect r = new Rect();
+            mRootView.getWindowVisibleDisplayFrame(r);
+
+            int screenHeight = mRootView.getRootView().getHeight();
+            int heightDifference = screenHeight - (r.bottom - r.top);
+            int resourceId = mContext.getResources()
+                    .getIdentifier("status_bar_height", "dimen", "android");
+            if (resourceId > 0) {
+                heightDifference -= mContext.getResources().getDimensionPixelSize(resourceId);
+            }
+            Log.d("Emojicons Popup", "Height difference is " + heightDifference);
+            if (heightDifference > 100) {
+                int oldHeight = getHeight();
+                keyBoardHeight = heightDifference;
+                setSize(LayoutParams.MATCH_PARENT, keyBoardHeight);
+                if (!mIsOpened) {
+                    if (mSoftKeyboardOpenCloseListener != null) {
+                        mSoftKeyboardOpenCloseListener.onKeyboardOpen(keyBoardHeight);
+                    }
+                }
+                mIsOpened = true;
+                if (mWaitingForKbOpen) {
+                    Log.d("Emojicons Popup", "Showing with height of " + keyBoardHeight);
+                    showAtBottom();
+                    mWaitingForKbOpen = false;
+                } else if(isShowing() && oldHeight != keyBoardHeight) {
+                    Log.d("Emojicons Popup", "Dismissing and showing again with height of " + keyBoardHeight);
+                    dismiss();
+                    showAtBottom();
+                }
+            } else {
+                mIsOpened = false;
+                if (mSoftKeyboardOpenCloseListener != null) {
+                    mSoftKeyboardOpenCloseListener.onKeyboardClose();
+                }
+            }
+        }
     }
 }
