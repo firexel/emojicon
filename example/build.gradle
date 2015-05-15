@@ -32,17 +32,3 @@ dependencies {
     compile project(":lib")
     compile 'com.android.support:support-v4:22.1.0'
 }
-
-apply plugin: 'android-maven'
-uploadArchives {
-    repositories.mavenDeployer {
-        repository(url: "${artifactory_context_url}") {
-            repoKey = 'android-artifact-repo'
-            authentication(userName: artifactory_user, password: artifactory_password)
-        }
-        pom.groupId = 'github.firexel'
-        pom.artifactId = 'emojicon'
-        pom.version = '0.0.1'
-        pom.packaging = 'aar'
-    }
-}

@@ -343,6 +343,7 @@ public class EmojiconsPopup extends PopupWindow implements ViewPager.OnPageChang
                 heightDifference -= mContext.getResources().getDimensionPixelSize(resourceId);
             }
             Log.d("Emojicons Popup", "Height difference is " + heightDifference);
+            Log.d("Emojicons Popup", "System ui flags " + mRootView.getRootView().getSystemUiVisibility());
             if (heightDifference > 100) {
                 int oldHeight = getHeight();
                 keyBoardHeight = heightDifference;
