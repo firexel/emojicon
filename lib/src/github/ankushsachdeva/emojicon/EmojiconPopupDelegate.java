@@ -16,8 +16,9 @@ public class EmojiconPopupDelegate {
     public static final String KEY_EMOJI_POPUP_SHOWN = "key_emoji_popup_shown";
     private Context mContext;
     private EmojiconsPopup mPopup;
-    private EditText mInputEditText;
+    private EditText mPrefferredEditText;
     private boolean mPendingShow;
+    private View mRootView;
 
     @Nullable
     private PopupShownListener mListener;
@@ -27,11 +28,12 @@ public class EmojiconPopupDelegate {
     }
 
     public void setInputEditText(EditText editText) {
-        mInputEditText = editText;
+        mPrefferredEditText = editText;
     }
 
     public void attach(View rootView) {
         mContext = rootView.getContext();
+        mRootView = rootView;
         mPopup = new EmojiconsPopup(rootView, mContext);
         mPopup.setOnDismissListener(new DismissListener());
         mPopup.setOnSoftKeyboardOpenCloseListener(new KeyboardOpenCloseListener());
@@ -45,12 +47,13 @@ public class EmojiconPopupDelegate {
 
     public void detach() {
         hide();
-        if(mPopup != null) {
+        if (mPopup != null) {
             mPopup.detachGlobalLayoutListener();
             mPopup = null;
         }
         mContext = null;
-        mInputEditText = null;
+        mPrefferredEditText = null;
+        mRootView = null;
     }
 
     public void saveState(Bundle bundle) {
@@ -74,11 +77,11 @@ public class EmojiconPopupDelegate {
                 mPopup.showAtBottom();
             } else {
                 //else, open the text keyboard first and immediately after that show the emoji popup
-                mInputEditText.setFocusableInTouchMode(true);
-                mInputEditText.requestFocus();
+                mPrefferredEditText.setFocusableInTouchMode(true);
+                mPrefferredEditText.requestFocus();
                 mPopup.showAtBottomPending();
                 final InputMethodManager inputMethodManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputMethodManager.showSoftInput(mInputEditText, InputMethodManager.SHOW_IMPLICIT);
+                inputMethodManager.showSoftInput(mPrefferredEditText, InputMethodManager.SHOW_IMPLICIT);
             }
             mPendingShow = false;
             notifyShown();
@@ -122,6 +125,16 @@ public class EmojiconPopupDelegate {
         }
     }
 
+    @Nullable
+    public EditText findFocusedEditText() {
+        View view = mRootView != null ? mRootView.findFocus() : null;
+        if (view instanceof EditText) {
+            return (EditText) view;
+        } else {
+            return null;
+        }
+    }
+
     public interface PopupShownListener {
         void onPopupShown();
 
@@ -131,8 +144,11 @@ public class EmojiconPopupDelegate {
     private class BackspaceClickedListener implements EmojiconsPopup.OnEmojiconBackspaceClickedListener {
         @Override
         public void onEmojiconBackspaceClicked(View v) {
-            KeyEvent event = new KeyEvent(0, 0, 0, KeyEvent.KEYCODE_DEL, 0, 0, 0, 0, KeyEvent.KEYCODE_ENDCALL);
-            mInputEditText.dispatchKeyEvent(event);
+            EditText currentFocus = findFocusedEditText();
+            if (currentFocus != null) {
+                KeyEvent event = new KeyEvent(0, 0, 0, KeyEvent.KEYCODE_DEL, 0, 0, 0, 0, KeyEvent.KEYCODE_ENDCALL);
+                currentFocus.dispatchKeyEvent(event);
+            }
         }
     }
 
@@ -140,10 +156,13 @@ public class EmojiconPopupDelegate {
 
         @Override
         public void onEmojiconClicked(Emojicon emojicon) {
-            String textToInsert = emojicon.toString();
-            int start = Math.max(mInputEditText.getSelectionStart(), 0);
-            int end = Math.max(mInputEditText.getSelectionEnd(), 0);
-            mInputEditText.getText().replace(Math.min(start, end), Math.max(start, end), textToInsert, 0, textToInsert.length());
+            EditText currentFocus = findFocusedEditText();
+            if (currentFocus != null) {
+                String textToInsert = emojicon.toString();
+                int start = Math.max(currentFocus.getSelectionStart(), 0);
+                int end = Math.max(currentFocus.getSelectionEnd(), 0);
+                currentFocus.getText().replace(Math.min(start, end), Math.max(start, end), textToInsert, 0, textToInsert.length());
+            }
         }
     }
 
