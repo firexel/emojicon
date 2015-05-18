@@ -20,11 +20,9 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_gravity="center"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
         android:gravity="center"
-        android:textSize="30sp"
         android:textColor="#ffffff"
-        tools:text=";)"/>
+        android:textSize="30sp"
+        tools:text=";)" />
 
 </RelativeLayout>

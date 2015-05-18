@@ -20,25 +20,10 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupPopupDelegate();
+        if(savedInstanceState != null) {
+            mPopupDelegate.restoreState(savedInstanceState);
+        }
         setupSendButton();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        mPopupDelegate.saveState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        mPopupDelegate.restoreState(savedInstanceState);
-    }
-
-    @Override
-    protected void onDestroy() {
-        mPopupDelegate.detach();
-        super.onDestroy();
     }
 
     private void setupPopupDelegate() {

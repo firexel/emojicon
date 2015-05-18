@@ -29,11 +29,16 @@ import android.widget.TextView;
  */
 class EmojiAdapter extends BaseAdapter {
     private final List<Emojicon> mEmojicons = new ArrayList<>();
+    private OnEmojiClickedListener mClickListener;
 
     public void setEmojiconList(List<Emojicon> emojiconList) {
         mEmojicons.clear();
         mEmojicons.addAll(emojiconList);
         notifyDataSetChanged();
+    }
+
+    public void setClickListener(OnEmojiClickedListener clickListener) {
+        mClickListener = clickListener;
     }
 
     @Override
@@ -56,6 +61,14 @@ class EmojiAdapter extends BaseAdapter {
         View v = convertView;
         if (v == null) {
             v = View.inflate(parent.getContext(), R.layout.emojicon_item, null);
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mClickListener != null) {
+                        mClickListener.onEmojiClicked(((ViewHolder) v.getTag()).mEmoji);
+                    }
+                }
+            });
             ViewHolder holder = new ViewHolder();
             holder.mEmojiContainer = (TextView) v.findViewById(R.id.emojiContainer);
             holder.mEmojiId = (TextView) v.findViewById(R.id.emojiId);
@@ -63,6 +76,7 @@ class EmojiAdapter extends BaseAdapter {
         }
         Emojicon emoji = getItem(position);
         ViewHolder holder = (ViewHolder) v.getTag();
+        holder.mEmoji = emoji;
         holder.mEmojiId.setText(emoji.getId());
         holder.mEmojiContainer.setText(emoji.toString());
         return v;
@@ -71,5 +85,10 @@ class EmojiAdapter extends BaseAdapter {
     private class ViewHolder {
         TextView mEmojiContainer;
         TextView mEmojiId;
+        Emojicon mEmoji;
+    }
+
+    public interface OnEmojiClickedListener {
+        void onEmojiClicked(Emojicon emojicon);
     }
 }

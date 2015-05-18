@@ -1,0 +1,5 @@
+<resources>
+    <style name="AppTheme" parent="Theme.AppCompat">
+        <item name="android:windowDrawsSystemBarBackgrounds">false</item>
+    </style>
+</resources>

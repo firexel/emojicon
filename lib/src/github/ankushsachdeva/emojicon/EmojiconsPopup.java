@@ -24,7 +24,6 @@ import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -33,7 +32,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager.LayoutParams;
-import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -44,7 +42,7 @@ import android.widget.PopupWindow;
  * @author Ankush Sachdeva (sankush@yahoo.co.in).
  */
 
-public class EmojiconsPopup extends PopupWindow implements ViewPager.OnPageChangeListener {
+public class EmojiconsPopup extends PopupWindow implements ViewPager.OnPageChangeListener, EmojiAdapter.OnEmojiClickedListener {
     private View[] mEmojiTabs;
     private EmojiconRecentsManager mRecentsManager;
     private int keyBoardHeight = 0;
@@ -263,6 +261,7 @@ public class EmojiconsPopup extends PopupWindow implements ViewPager.OnPageChang
         // ignore
     }
 
+    @Override
     public void onEmojiClicked(Emojicon emojicon) {
         mRecentsManager.push(emojicon);
         if (mEmojiconClickedListener != null) {
@@ -293,12 +292,7 @@ public class EmojiconsPopup extends PopupWindow implements ViewPager.OnPageChang
             container.addView(gridView);
             final EmojiAdapter adapter = mGroups.get(viewPosition).createAdapter();
             gridView.setAdapter(adapter);
-            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int emojiconPosition, long id) {
-                    onEmojiClicked(adapter.getItem(emojiconPosition));
-                }
-            });
+            adapter.setClickListener(EmojiconsPopup.this);
             mAdapters.put(viewPosition, adapter);
             return gridView;
         }
@@ -342,8 +336,6 @@ public class EmojiconsPopup extends PopupWindow implements ViewPager.OnPageChang
             if (resourceId > 0) {
                 heightDifference -= mContext.getResources().getDimensionPixelSize(resourceId);
             }
-            Log.d("Emojicons Popup", "Height difference is " + heightDifference);
-            Log.d("Emojicons Popup", "System ui flags " + mRootView.getRootView().getSystemUiVisibility());
             if (heightDifference > 100) {
                 int oldHeight = getHeight();
                 keyBoardHeight = heightDifference;
@@ -355,11 +347,9 @@ public class EmojiconsPopup extends PopupWindow implements ViewPager.OnPageChang
                 }
                 mIsOpened = true;
                 if (mWaitingForKbOpen) {
-                    Log.d("Emojicons Popup", "Showing with height of " + keyBoardHeight);
                     showAtBottom();
                     mWaitingForKbOpen = false;
                 } else if(isShowing() && oldHeight != keyBoardHeight) {
-                    Log.d("Emojicons Popup", "Dismissing and showing again with height of " + keyBoardHeight);
                     dismiss();
                     showAtBottom();
                 }
