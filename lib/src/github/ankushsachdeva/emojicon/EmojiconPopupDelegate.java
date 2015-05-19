@@ -1,8 +1,10 @@
 package github.ankushsachdeva.emojicon;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -32,7 +34,7 @@ public class EmojiconPopupDelegate {
     }
 
     public void attach(View rootView) {
-        mContext = rootView.getContext();
+        mContext = createThemedContext(rootView.getContext());
         mRootView = rootView;
         mPopup = new EmojiconsPopup(rootView, mContext);
         mPopup.setOnDismissListener(new DismissListener());
@@ -43,6 +45,13 @@ public class EmojiconPopupDelegate {
         if (mPendingShow) {
             show();
         }
+    }
+
+    private Context createThemedContext(Context context) {
+        TypedArray typedArray = context.obtainStyledAttributes(null, new int[]{R.attr.emojicon_theme});
+        int themeId = typedArray.getResourceId(0, R.style.Emojicon);
+        typedArray.recycle();
+        return new ContextThemeWrapper(context, themeId);
     }
 
     public void detach() {

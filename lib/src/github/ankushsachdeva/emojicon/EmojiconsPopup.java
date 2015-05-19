@@ -70,15 +70,12 @@ public class EmojiconsPopup extends PopupWindow implements ViewPager.OnPageChang
      * @param context  The context of current activity.
      */
     public EmojiconsPopup(View rootView, Context context) {
-        super(context);
+        super(context, null, R.attr.emojicon_dialog_style);
         mContext = context;
         mRootView = rootView;
         mRecentsManager = new EmojiconRecentsManager(context);
         setContentView(createCustomView());
         setSoftInputMode(LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        setSize((int) mContext.getResources().getDimension(R.dimen.keyboard_height), LayoutParams.MATCH_PARENT);
-        setBackgroundDrawable(null);
-        setAnimationStyle(0);
     }
 
     /**
@@ -290,7 +287,7 @@ public class EmojiconsPopup extends PopupWindow implements ViewPager.OnPageChang
         public GridView instantiateItem(ViewGroup container, final int viewPosition) {
             GridView gridView = (GridView) LayoutInflater.from(mContext).inflate(R.layout.emojicon_grid, container, false);
             container.addView(gridView);
-            final EmojiAdapter adapter = mGroups.get(viewPosition).createAdapter();
+            final EmojiAdapter adapter = mGroups.get(viewPosition).createAdapter(mContext);
             gridView.setAdapter(adapter);
             adapter.setClickListener(EmojiconsPopup.this);
             mAdapters.put(viewPosition, adapter);

@@ -1,5 +1,7 @@
 package github.ankushsachdeva.emojicon;
 
+import android.content.Context;
+
 import java.util.List;
 
 /**
@@ -20,7 +22,7 @@ class RecentsEmojiconGroup extends EmojiconGroup {
     }
 
     @Override
-    public EmojiAdapter createAdapter() {
-        return new EmojiRecentAdapter(mRecentsManager);
+    public EmojiAdapter createAdapter(Context context) {
+        return new EmojiRecentAdapter(context, mRecentsManager);
     }
 }

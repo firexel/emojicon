@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="?emojicon_kbd_style"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/keyboard_background_holo">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:id="@+id/emojis_tab"
@@ -20,9 +20,9 @@
         android:layout_below="@id/emojis_tab" />
 
     <View
+        style="?emojicon_divider_style"
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:layout_below="@id/emojis_tab"
-        android:background="#8f8f8f" />
+        android:layout_below="@id/emojis_tab" />
 
 </RelativeLayout>

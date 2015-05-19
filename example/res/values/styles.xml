@@ -1,3 +1,21 @@
 <resources>
-    <style name="AppTheme" parent="Theme.AppCompat"/>
+    <style name="BaseAppTheme" parent="Theme.AppCompat">
+        <item name="emojicon_theme">@style/AppTheme.Emojicon</item>
+    </style>
+
+    <style name="AppTheme" parent="BaseAppTheme"/>
+
+    <style name="AppTheme.Emojicon" parent="@style/Emojicon">
+        <item name="emojicon_grid_style">@style/AppTheme.Emojicon.Grid</item>
+        <item name="emojicon_tab_item_style">@style/AppTheme.Emojicon.Tab</item>
+    </style>
+
+    <style name="AppTheme.Emojicon.Grid" parent="@style/Emojicon.Grid">
+        <item name="android:background">#4000ff00</item>
+    </style>
+
+    <style name="AppTheme.Emojicon.Tab" parent="@style/Emojicon.TabItem">
+        <item name="android:background">#40ff0000</item>
+    </style>
+
 </resources>

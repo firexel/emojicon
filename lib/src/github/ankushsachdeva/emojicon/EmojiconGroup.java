@@ -1,5 +1,7 @@
 package github.ankushsachdeva.emojicon;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +31,7 @@ abstract class EmojiconGroup {
 
     public abstract List<Emojicon> getEmojicons();
 
-    public abstract EmojiAdapter createAdapter();
+    public abstract EmojiAdapter createAdapter(Context context);
 
     public int getIconResId() {
         return mIconResId;

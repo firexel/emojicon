@@ -1,5 +1,7 @@
 package github.ankushsachdeva.emojicon;
 
+import android.content.Context;
+
 import java.util.List;
 
 /**
@@ -19,8 +21,8 @@ class StaticEmojiconGroup extends EmojiconGroup {
     }
 
     @Override
-    public EmojiAdapter createAdapter() {
-        EmojiAdapter adapter = new EmojiAdapter();
+    public EmojiAdapter createAdapter(Context context) {
+        EmojiAdapter adapter = new EmojiAdapter(context);
         adapter.setEmojiconList(getEmojicons());
         return adapter;
     }

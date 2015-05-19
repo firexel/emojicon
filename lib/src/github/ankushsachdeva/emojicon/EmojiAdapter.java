@@ -19,6 +19,8 @@ package github.ankushsachdeva.emojicon;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -30,6 +32,11 @@ import android.widget.TextView;
 class EmojiAdapter extends BaseAdapter {
     private final List<Emojicon> mEmojicons = new ArrayList<>();
     private OnEmojiClickedListener mClickListener;
+    private final Context mContext;
+
+    public EmojiAdapter(Context context) {
+        this.mContext = context;
+    }
 
     public void setEmojiconList(List<Emojicon> emojiconList) {
         mEmojicons.clear();
@@ -60,11 +67,11 @@ class EmojiAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         View v = convertView;
         if (v == null) {
-            v = View.inflate(parent.getContext(), R.layout.emojicon_item, null);
+            v = LayoutInflater.from(mContext).inflate(R.layout.emojicon_item, null);
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(mClickListener != null) {
+                    if (mClickListener != null) {
                         mClickListener.onEmojiClicked(((ViewHolder) v.getTag()).mEmoji);
                     }
                 }
