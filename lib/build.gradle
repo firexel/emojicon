@@ -41,7 +41,7 @@ uploadArchives {
         }
         pom.groupId = 'github.firexel'
         pom.artifactId = 'emojicon'
-        pom.version = '0.0.6'
+        pom.version = '0.0.7'
         pom.packaging = 'aar'
     }
 }
