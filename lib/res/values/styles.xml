@@ -10,6 +10,7 @@
     <attr name="emojicon_grid_style" format="reference" />
     <attr name="emojicon_grid_item_style" format="reference" />
     <attr name="emojicon_tab_bar_style" format="reference" />
+    <attr name="emojicon_tab_bar_height" format="dimension|reference" />
     <attr name="emojicon_tab_item_style" format="reference" />
     <attr name="emojicon_kbd_style" format="reference" />
 
@@ -21,6 +22,7 @@
         <item name="emojicon_grid_style">@style/Emojicon.Grid</item>
         <item name="emojicon_grid_item_style">@style/Emojicon.GridItem</item>
         <item name="emojicon_tab_bar_style">@style/Emojicon.TabBar</item>
+        <item name="emojicon_tab_bar_height">50dp</item>
         <item name="emojicon_tab_item_style">@style/Emojicon.TabItem</item>
         <item name="emojicon_kbd_style">@style/Emojicon.Kbd</item>
     </style>

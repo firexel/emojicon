@@ -199,7 +199,7 @@ public class EmojiconsPopup extends PopupWindow implements ViewPager.OnPageChang
             });
             inflateDivider(tabHostLayout);
         }
-        View backSpace = inflateTab(tabHostLayout, R.drawable.sym_keyboard_delete_holo_dark);
+        View backSpace = inflateTab(tabHostLayout, R.drawable.ic_keyboard_delete);
         backSpace.setOnTouchListener(new RepeatTouchListener(1000, 50, new OnClickListener() {
             @Override
             public void onClick(View v) {

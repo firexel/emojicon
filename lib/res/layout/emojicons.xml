@@ -9,7 +9,7 @@
         android:id="@+id/emojis_tab"
         style="?emojicon_tab_bar_style"
         android:layout_width="match_parent"
-        android:layout_height="50dip"
+        android:layout_height="?emojicon_tab_bar_height"
         android:layout_alignParentTop="true"
         android:orientation="horizontal" />
 
