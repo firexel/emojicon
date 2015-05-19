@@ -9,6 +9,7 @@
     <attr name="emojicon_divider_style" format="reference" />
     <attr name="emojicon_grid_style" format="reference" />
     <attr name="emojicon_grid_item_style" format="reference" />
+    <attr name="emojicon_tab_bar_style" format="reference" />
     <attr name="emojicon_tab_item_style" format="reference" />
     <attr name="emojicon_kbd_style" format="reference" />
 
@@ -19,6 +20,7 @@
         <item name="emojicon_divider_style">@style/Emojicon.Divider</item>
         <item name="emojicon_grid_style">@style/Emojicon.Grid</item>
         <item name="emojicon_grid_item_style">@style/Emojicon.GridItem</item>
+        <item name="emojicon_tab_bar_style">@style/Emojicon.TabBar</item>
         <item name="emojicon_tab_item_style">@style/Emojicon.TabItem</item>
         <item name="emojicon_kbd_style">@style/Emojicon.Kbd</item>
     </style>
@@ -61,6 +63,10 @@
 
     <style name="Emojicon.GridItem">
         <item name="android:minHeight">64dp</item>
+    </style>
+
+    <style name="Emojicon.TabBar">
+        <item name="android:background">@null</item>
     </style>
 
     <style name="Emojicon.TabItem">
